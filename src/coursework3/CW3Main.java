@@ -13,6 +13,12 @@ public class CW3Main {
         group.addVolunteer(new Volunteer("ABC"));
         group.addVolunteer(new Volunteer("BEE"));
         System.out.println(group.getSkillsTotals());
+        group.addVolunteer(new Volunteer("CAA"));
+        System.out.println(group.getSkillsTotals());
+        group.removeVolunteer("CAA");
+        System.out.println(group.getSkillsTotals());
+        System.out.println(group.removeVolunteer("CEA"));
+        System.out.println(group.getSkillsTotals());
     }
     
     //Construct and run your menu here.

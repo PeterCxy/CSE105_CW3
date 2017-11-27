@@ -30,7 +30,34 @@ public class CommunityGroup implements CommunityGroupInterface {
         for (int i = 0; i < SKILL_NUM; i++) {
             mSkillSet[i] += vl.getSkillPoint(i);
         }
-    }  
+    }
+
+    /*
+     * Remove a volunteer from this group
+     * Note that we don't distinguish volunteers with the same skillsets
+     * @return: true if the volunteer is found and deleted
+     */
+    public boolean removeVolunteer(Volunteer vl) {
+        if (!mVolunteers.contains(vl)) {
+            return false;
+        }
+        mVolunteers.remove(vl);
+
+        // Remove the skills of this single volunteer from the totals
+        for (int i = 0; i < SKILL_NUM; i++) {
+            mSkillSet[i] -= vl.getSkillPoint(i);
+        }
+        return true;
+    }
+
+    /*
+     * Remove a volunteer with the specified skill set from this group
+     * @skills: the string of the skill set of this volunteer
+     * @return: true if the volunteer is found and deleted
+     */
+    public boolean removeVolunteer(String skills) {
+        return removeVolunteer(new Volunteer(skills));
+    }
     
     /*
      * Returns the total number of volunteers available from this group

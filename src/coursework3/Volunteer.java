@@ -58,6 +58,20 @@ public class Volunteer implements VolunteerInterface {
     }
 
     /*
+     * Overrides @{java.lang.Object.equals()} for use in ArrayList (@{CommunityGroup})
+     * Compare the equality of two volunteers based on the skill set
+     * Note: the skill set is the only thing that matters in this program
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj.getClass() != Volunteer.class) {
+            return false;
+        } else {
+            return this.getSkillSet().equals(((Volunteer) obj).getSkillSet());
+        }
+    }
+
+    /*
      * Parse the skills string into the mSkillSet array
      * See @{mSkillSet} for details.
      */
