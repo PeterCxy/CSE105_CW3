@@ -15,10 +15,16 @@ public class SkillSorter implements SkillSorterInterface {
         }
     }
     
+    /*
+     * Add the volunteer to some group such that
+     * the distribution of the skills and the total members of each group
+     * are best balanced.
+     * 
+     * @vol: the volunteer
+     */
     @Override
     public void addVolunteer(Volunteer vol) {
-        //add a volunteer to a Community Group USING YOUR SORTING ALGORITHM
-        //COMPLETE CODE HERE
+        myGroups.get(bestGroup(vol)).addVolunteer(vol);
     }
     
     @Override
@@ -46,12 +52,31 @@ public class SkillSorter implements SkillSorterInterface {
     }
 
     /*
+     * Print all the statistics about all the groups
+     * One line for one group
+     */
+    public void printAll() {
+        for (int i = 0; i < myGroups.size(); i++) {
+            System.out.println(myGroups.get(i).toString());
+        }
+    }
+
+    /*
      * Determine which group to add a volunteer to
      * that will make the cost function (defined below) be closest to 0
      * @vl: the volunteer
      */
     private int bestGroup(Volunteer vl) {
-        return 0; // TODO
+        double best = Double.MAX_VALUE;
+        int bestGroup = -1;
+        for (int i = 0; i < myGroups.size(); i++) {
+            double cost = costFunc(vl, i);
+            if (cost < best) { // Find the minimum possible value of the cost function
+                best = cost;
+                bestGroup = i;
+            }
+        }
+        return bestGroup;
     }
 
     /*
@@ -95,17 +120,17 @@ public class SkillSorter implements SkillSorterInterface {
         // Calculate the average which is needed by the variance
         double average = vl.getSkillPoint(skillIndex); // Start with our new guy
         for (int i = 0; i < myGroups.size(); i++) {
-            average += myGroups.get(i).getSkillPoint(i);
+            average += myGroups.get(i).getSkillPoint(skillIndex);
         }
         average = average / myGroups.size();
 
         // Actually calculate the variance
         double variance = 0f;
         for (int i = 0; i < myGroups.size(); i++) {
-            double diff = myGroups.get(i).getSkillPoint(i) - average;
+            double diff = myGroups.get(i).getSkillPoint(skillIndex) - average;
             if (i == groupIndex) {
                 // The new person is here
-                diff += vl.getSkillPoint(i);
+                diff += vl.getSkillPoint(skillIndex);
             }
             variance += diff * diff;
         }
