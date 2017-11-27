@@ -3,8 +3,7 @@ package coursework3;
 
 import cw3interfaces.VolunteerInterface;
 
-import static coursework3.Constants.SKILL_INDEX_MAP;
-import static coursework3.Constants.INDEX_SKILL_MAP;
+import static coursework3.Constants.SKILL_NUM;
 
 //DO NOT CHANGE THIS NAME
 public class Volunteer implements VolunteerInterface {
@@ -24,6 +23,20 @@ public class Volunteer implements VolunteerInterface {
     public Volunteer(String skills) {
         parseSkillStr(skills);
     }
+
+    /*
+     * Get the number of a skill based on its name
+     */
+    public int getSkillPoint(char skillName) {
+        return getSkillPoint(Utility.getSkillIndex(skillName));
+    }
+
+    /*
+     * Get the number of a skill based on its index
+     */
+    public int getSkillPoint(int index) {
+        return mSkillSet[index];
+    }
     
     // these public methods need to form the interface 
     // DO NOT CHANGE ANY OF THESE METHOD NAMES, RETURN VALUES, OR ARGUMENTS   
@@ -32,12 +45,12 @@ public class Volunteer implements VolunteerInterface {
         //COMPLETE CODE HERE
         //returns a String of this volunteers skills, eg BBB, ABC, CDD etc
         StringBuilder setBuilder = new StringBuilder();
-        for (int i = 0; i < INDEX_SKILL_MAP.length; i++) {
+        for (int i = 0; i < SKILL_NUM; i++) {
             if (mSkillSet[i] > 0) {
                 // Append the corresponding char representation of the skill
                 // for each occurance
                 for (int j = 0; j < mSkillSet[i]; j++)
-                    setBuilder.append(INDEX_SKILL_MAP[i]);
+                    setBuilder.append(Utility.getSkillName(i));
             }
         }
 
@@ -54,13 +67,7 @@ public class Volunteer implements VolunteerInterface {
         }
 
         for (int i = 0; i < 3; i++) {
-            // Get the index of corresponding skill in the mSkillSet array
-            Integer index = SKILL_INDEX_MAP.get(str.charAt(i));
-            if (index == null) { // If null, this means the character is illegal
-                throw new IllegalArgumentException("Illegal character " + str.charAt(i));
-            } else {
-                mSkillSet[index]++; // Increase the occurence by once
-            }
+            mSkillSet[Utility.getSkillIndex(str.charAt(i))]++; // Increase the occurence by once
         }
     }
     

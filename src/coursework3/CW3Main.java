@@ -9,7 +9,10 @@ You need to complete the other classes, including the empty methods.
 public class CW3Main {
     
     public static void main(String[] args){
-        System.out.println(new Volunteer("BBA").getSkillSet());
+        CommunityGroup group = new CommunityGroup();
+        group.addVolunteer(new Volunteer("ABC"));
+        group.addVolunteer(new Volunteer("BEE"));
+        System.out.println(group.getSkillsTotals());
     }
     
     //Construct and run your menu here.

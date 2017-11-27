@@ -14,7 +14,8 @@ CLASSES = \
 		src/coursework3/Constants.java \
 		src/coursework3/CW3Main.java \
 		src/coursework3/SkillSorter.java \
-		src/coursework3/Volunteer.java
+		src/coursework3/Volunteer.java \
+		src/coursework3/Utility.java
 
 DSTFILES = $(patsubst src/%.java,out/%.class,$(CLASSES))
 
