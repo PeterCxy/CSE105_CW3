@@ -56,4 +56,13 @@ public class CommunityGroup implements CommunityGroupInterface {
         }
         return totalBuilder.substring(2, totalBuilder.length()).toString();
     }
+
+    /*
+     * Overriding @{java.lang.Object} method
+     * Alias of @{getSkillsTotals}
+     */
+    @Override
+    public String toString() {
+        return getSkillsTotals();
+    }
 }
