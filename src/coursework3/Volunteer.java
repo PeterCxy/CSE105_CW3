@@ -18,14 +18,14 @@ public class Volunteer implements VolunteerInterface {
      *   Must have a length of 3. Must contain only A, B, C, D or E
      *   e.g. "AAB" "CCD" "ABE"
      */
-    public Volunteer(String skills) {
+    public Volunteer(String skills) throws IllegalArgumentException {
         parseSkillStr(skills);
     }
 
     /*
      * Get the number of a skill based on its name
      */
-    public int getSkillPoint(char skillName) {
+    public int getSkillPoint(char skillName) throws IllegalArgumentException {
         return getSkillPoint(Utility.getSkillIndex(skillName));
     }
 
@@ -72,7 +72,7 @@ public class Volunteer implements VolunteerInterface {
      * Parse the skills string into the mSkillSet array
      * See @{mSkillSet} for details.
      */
-    private void parseSkillStr(String str) {
+    private void parseSkillStr(String str) throws IllegalArgumentException {
         if (str.length() != 3) {
             throw new IllegalArgumentException("A person can only have 3 skills");
         }

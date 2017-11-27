@@ -8,7 +8,7 @@ You need to complete the other classes, including the empty methods.
 */
 public class CW3Main {
     
-    public static void main(String[] args){
+    public static void main(String[] args) {
         CommunityGroup group = new CommunityGroup();
         group.addVolunteer(new Volunteer("ABC"));
         group.addVolunteer(new Volunteer("BEE"));

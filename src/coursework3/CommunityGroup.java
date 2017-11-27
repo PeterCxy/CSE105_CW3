@@ -52,7 +52,7 @@ public class CommunityGroup implements CommunityGroupInterface {
      * @skills: the string of the skill set of this volunteer
      * @return: true if the volunteer is found and deleted
      */
-    public boolean removeVolunteer(String skills) {
+    public boolean removeVolunteer(String skills) throws IllegalArgumentException {
         return removeVolunteer(new Volunteer(skills));
     }
     
