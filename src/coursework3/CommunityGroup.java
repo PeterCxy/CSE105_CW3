@@ -1,14 +1,11 @@
-//DO NOT CHANGE THIS PACKAGE
 package coursework3;
 
 import cw3interfaces.CommunityGroupInterface;
 
-import java.awt.image.IndexColorModel;
 import java.util.ArrayList;
 
 import static coursework3.Constants.SKILL_NUM;
 
-//DO NOT CHANGE THIS NAME
 public class CommunityGroup implements CommunityGroupInterface {
     private ArrayList<Volunteer> mVolunteers = new ArrayList<Volunteer>();
 

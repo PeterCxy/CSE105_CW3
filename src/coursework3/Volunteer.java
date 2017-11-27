@@ -1,11 +1,9 @@
-//DO NOT CHANGE THIS PACKAGE
 package coursework3;
 
 import cw3interfaces.VolunteerInterface;
 
 import static coursework3.Constants.SKILL_NUM;
 
-//DO NOT CHANGE THIS NAME
 public class Volunteer implements VolunteerInterface {
     /*
      * Each entry of this array represents
@@ -38,12 +36,11 @@ public class Volunteer implements VolunteerInterface {
         return mSkillSet[index];
     }
     
-    // these public methods need to form the interface 
-    // DO NOT CHANGE ANY OF THESE METHOD NAMES, RETURN VALUES, OR ARGUMENTS   
+    /*
+     * Returns the string representation of the skill set
+     */
     @Override
     public String getSkillSet() {
-        //COMPLETE CODE HERE
-        //returns a String of this volunteers skills, eg BBB, ABC, CDD etc
         StringBuilder setBuilder = new StringBuilder();
         for (int i = 0; i < SKILL_NUM; i++) {
             if (mSkillSet[i] > 0) {
