@@ -55,6 +55,20 @@ public class CommunityGroup implements CommunityGroupInterface {
     public boolean removeVolunteer(String skills) throws IllegalArgumentException {
         return removeVolunteer(new Volunteer(skills));
     }
+
+    /*
+     * Get the number of a skill based on its name
+     */
+    public int getSkillPoint(char skillName) throws IllegalArgumentException {
+        return getSkillPoint(Utility.getSkillIndex(skillName));
+    }
+
+    /*
+     * Get the number of a skill based on its index
+     */
+    public int getSkillPoint(int index) {
+        return mSkillSet[index];
+    }
     
     /*
      * Returns the total number of volunteers available from this group
