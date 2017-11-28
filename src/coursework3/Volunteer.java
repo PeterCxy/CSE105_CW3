@@ -4,13 +4,23 @@ import cw3interfaces.VolunteerInterface;
 
 import static coursework3.Constants.SKILL_NUM;
 
-public class Volunteer implements VolunteerInterface {
+public class Volunteer implements VolunteerInterface, Serializable {
     /*
      * Each entry of this array represents
      * the number of 'instances' a person have for one specific skill
      * See @{Constants.SKILL_INDEX_MAP} for how this array is arranged
      */
     private int[] mSkillSet = new int[]{0, 0, 0, 0, 0};
+
+    /*
+     * Zero-argument constructor
+     * used when deserialization is needed
+     * CALL deserialize() RIGHT AFTER USING THIS CONSTRUCTOR
+     * OTHERWISE THE PROGRAM WILL GO REALLY WRONG
+     */
+    public Volunteer() {
+        // Nothing to do.
+    }
 
     /*
      * Constructor of Volunteer class
@@ -52,6 +62,27 @@ public class Volunteer implements VolunteerInterface {
         }
 
         return setBuilder.toString();
+    }
+
+    /*
+     * Serialize this object to a String
+     * For persistency
+     * Here it simply equals getSkillSet()
+     */
+    @Override
+    public String serialize() {
+        return getSkillSet();
+    }
+
+    /*
+     * Deserialize this object from a String
+     * For persistency
+     * This is basically equivalent to the one-parameter constructor
+     * but this is needed to implement the Serializable interface.
+     */
+    @Override
+    public void deserialize(String str) throws IllegalArgumentException {
+        parseSkillStr(str);
     }
 
     /*

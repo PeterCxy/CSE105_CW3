@@ -6,7 +6,8 @@ import java.util.ArrayList;
 
 import static coursework3.Constants.SKILL_NUM;
 
-public class CommunityGroup implements CommunityGroupInterface {
+public class CommunityGroup extends SerializableSet<Volunteer> implements CommunityGroupInterface {
+    private static final String SEPARATOR = ",";
     private ArrayList<Volunteer> mVolunteers = new ArrayList<Volunteer>();
 
     /*
@@ -15,6 +16,14 @@ public class CommunityGroup implements CommunityGroupInterface {
      * The index of this array corresponds to @{Volunteer.mSkillSet}
      */
     private int[] mSkillSet = new int[]{0, 0, 0, 0, 0};
+
+    /*
+     * Constructor to explicitly handle things needed by @{SerializableSet<T>}
+     */
+    public CommunityGroup() {
+        super(Volunteer.class, SEPARATOR);
+        setList(mVolunteers);
+    }
     
     /*
      * Add a volunteer to this group
@@ -68,6 +77,16 @@ public class CommunityGroup implements CommunityGroupInterface {
      */
     public int getSkillPoint(int index) {
         return mSkillSet[index];
+    }
+
+    /*
+     * Alias of @{addVolunteer()} but overrides the super class method
+     * To ensure the totals are calculated correctly on deserialization
+     * (this method will be called while deserialization when adding items)
+     */
+    @Override
+    protected void add(Volunteer vl) {
+        addVolunteer(vl);
     }
     
     /*

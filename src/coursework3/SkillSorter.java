@@ -6,10 +6,16 @@ import java.util.ArrayList;
 
 import static coursework3.Constants.SKILL_NUM;
 
-public class SkillSorter implements SkillSorterInterface {
+public class SkillSorter extends SerializableSet<CommunityGroup> implements SkillSorterInterface {
+    private static final String SEPARATOR = "|";
     private ArrayList<CommunityGroup> myGroups = new ArrayList<>();
     
+    /*
+     * Initialization and stuff needed by @{SerializableSet<T>}
+     */
     public SkillSorter() {
+        super(CommunityGroup.class, SEPARATOR);
+        setList(myGroups);
         for (int i = 0; i < 5; i++) {
             myGroups.add(new CommunityGroup());
         }

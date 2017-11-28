@@ -12,6 +12,11 @@ public class CW3Main {
         // TODO: Remove testing code
         Scanner scanner = new Scanner(System.in);
         feedRandomData(scanner.nextInt());
+        String s = sSorter.serialize();
+        System.out.println(s);
+        SkillSorter nSorter = new SkillSorter();
+        nSorter.deserialize(s);
+        nSorter.printAll();
     }
     
     /*
