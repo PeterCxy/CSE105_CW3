@@ -243,7 +243,7 @@ class Shell {
      */
     private static class ShowCommand extends Command {
         ShowCommand() {
-            super("show", "s", "Print a group's information.");
+            super("show", "s", "Print a group's member information.");
         }
 
         @Override
