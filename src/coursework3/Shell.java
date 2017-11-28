@@ -43,6 +43,43 @@ class Shell {
         String getDescription() {
             return mDescription;
         }
+
+        // Shorthand to print a message with format `command_name > ....`
+        void print(String msg) {
+            out.print(mName + " > " + msg);
+        }
+
+        // Shorthand.
+        void println(String msg) {
+            print(msg + "\n");
+        }
+
+        // Shorthand to print the prompt to wait for input
+        void printPrompt() {
+            out.print(mName + ">> ");
+        }
+
+        /*
+         * Prompt for next available token
+         */
+        String prompt(Scanner scanner) {
+            printPrompt();
+            return scanner.next().trim();
+        }
+
+        /*
+         * Prompt for an Integer input
+         * throw @{java.lang.IllegalArgumentException} if no integer given
+         */
+        int promptInt(Scanner scanner) {
+            printPrompt();
+            if (scanner.hasNextInt()) {
+                return scanner.nextInt();
+            } else {
+                scanner.next(); // Discard the invalid input
+                throw new IllegalArgumentException("Need an integer.");
+            }
+        }
     }
 
     /*
@@ -209,14 +246,13 @@ class Shell {
 
         @Override
         void execute(Scanner scanner) {
-            out.println("add > Please input the skill set of the new volunteer. e.g. ABC, BBA, CDE");
-            out.print("add >> "); // The prompt
-            String skillSet = scanner.next().trim().toUpperCase();
+            println("Please input the skill set of the new volunteer. e.g. ABC, BBA, CDE");
+            String skillSet = prompt(scanner).toUpperCase();
             
             if (!skillSet.equals("")) {
                 // Make sure that the skill set is not empty
                 int index = sSorter.myAddVolunteer(new Volunteer(skillSet));
-                out.println("add > The volunteer with skills `" + skillSet + "` has been added to group " + index);
+                println("The volunteer with skills `" + skillSet + "` has been added to group " + index);
             } else {
                 // Error message.
                 throw new IllegalArgumentException("Illegal skill set.");
@@ -238,20 +274,13 @@ class Shell {
 
         @Override
         void execute(Scanner scanner) {
-            out.println("random > How many volunteers with random skill set would you like?");
-            out.print("random >> ");
-
-            if (!scanner.hasNextInt()) { // Make sure we have en integer
-                scanner.next(); // Discard this token
-                throw new IllegalArgumentException("You must enter an integer.");
-            }
-
-            int total = scanner.nextInt();
+            println("How many volunteers with random skill set would you like?");
+            int total = promptInt(scanner);
 
             if (total > 0) {
                 feedRandomData(total);
-                out.println("random > Added " + total + " random volunteers.");
-                out.println("random > Use `overview` to see how the groups are balanced.");
+                println("Added " + total + " random volunteers.");
+                println("Use `overview` to see how the groups are balanced.");
             } else {
                 throw new IllegalArgumentException("Volunteer count can't be 0 or minus.");
             }
