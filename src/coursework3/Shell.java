@@ -104,6 +104,7 @@ class Shell {
         sCommandList.add(new OverviewCommand());
         sCommandList.add(new ShowCommand());
         sCommandList.add(new AddCommand());
+        sCommandList.add(new DeleteCommand());
         sCommandList.add(new RandomCommand());
     }
 
@@ -250,22 +251,24 @@ class Shell {
         void execute(Scanner scanner) {
             println("Please specify which group you would like to view. [0-4]");
             int index = promptInt(scanner);
+            printStats(index);
+        }
 
-            if (index < 5) {
-                println("Printing information about group " + index);
-                HashMap<String, Integer> stats = sSorter.getStats(index);
+        /*
+         * Static reusable utility method to print the information of a group
+         * also used in @{ManipulationCommand}
+         */
+        static void printStats(int index) {
+            out.println("Group " + index);
+            HashMap<String, Integer> stats = sSorter.getStats(index);
+            // Again, print it as a table.
+            // First make the header.
+            // Don't need the command prompt here, so just use @{java.lang.System.out.println()}
+            out.println("SkillSet\tTotal");
 
-                // Again, print it as a table.
-                // First make the header.
-                // Don't need the command prompt here, so just use @{java.lang.System.out.println()}
-                out.println("SkillSet\tTotal");
-
-                // Print all entries available in the stats
-                for (String skills : stats.keySet()) {
-                    out.println(skills + "\t\t" + stats.get(skills));
-                }
-            } else {
-                throw new IllegalArgumentException("Group index must be within [0, 4].");
+            // Print all entries available in the stats
+            for (String skills : stats.keySet()) {
+                out.println(skills + "\t\t" + stats.get(skills));
             }
         }
     }
@@ -295,6 +298,51 @@ class Shell {
                 // Error message.
                 throw new IllegalArgumentException("Illegal skill set.");
             }
+        }
+    }
+
+    /*
+     * Base class for all manipulations on groups
+     * Prints group information and waits for input
+     */
+    private static abstract class ManipulationCommand extends Command {
+        ManipulationCommand(String name, String shortName, String description) {
+            super(name, shortName, description);
+        }
+
+        @Override
+        void execute(Scanner scanner) {
+            println("Choose a group to manipulate [0-4]");
+            int groupIndex = promptInt(scanner);
+            ShowCommand.printStats(groupIndex); // Re-use code from @{ShowCommand}
+
+            // Now that the group information is printed
+            // let the subclass decide what to do.
+            manipulate(groupIndex, scanner);
+        }
+
+        abstract void manipulate(int groupIndex, Scanner scanner);
+    }
+
+    /*
+     * The Delete command
+     * delete a volunteer from a group
+     * 
+     * `delete` or `d` to invoke
+     */
+    private static class DeleteCommand extends ManipulationCommand {
+        DeleteCommand() {
+            super("delete", "d", "Delete a volunteer from a group.");
+        }
+
+        @Override
+        void manipulate(int groupIndex, Scanner scanner) {
+            println("Choose a volunteer from the table above.");
+            println("Note that we don't distinguish between volunteers with the same skills.");
+            println("Please input the skill set of the volunteer that you need to delete.");
+            String skillSet = prompt(scanner);
+            sSorter.deleteVolunteer(skillSet, groupIndex);
+            println("A volunteer of skills `" + skillSet + "` has been deleted from group " + groupIndex);
         }
     }
 

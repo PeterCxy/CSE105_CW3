@@ -73,6 +73,15 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
         deleteVolunteer(skillSet, from);
         to.addVolunteer(new Volunteer(skillSet));
     }
+
+    /*
+     * Same but with group indexes instead of group objects
+     */
+    public void moveVolunteer(String skillSet, int fromIndex, int toIndex) throws IllegalArgumentException {
+        assertGroup(fromIndex);
+        assertGroup(toIndex);
+        moveVolunteer(skillSet, myGroups.get(fromIndex), myGroups.get(toIndex));
+    }
     
     /*
      * Delete a volunteer with some skills from a group
@@ -87,6 +96,14 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
         if (!from.removeVolunteer(skillSet)) {
             throw new IllegalArgumentException("Skill set " + skillSet + " not found.");
         }
+    }
+
+    /*
+     * Same but with group indexes instead of group objects
+     */
+    public void deleteVolunteer(String skillSet, int fromIndex) throws IllegalArgumentException {
+        assertGroup(fromIndex);
+        deleteVolunteer(skillSet, myGroups.get(fromIndex));
     }
     
     /*
@@ -121,7 +138,18 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
      * @groupIndex: the group.
      */
     public HashMap<String, Integer> getStats(int groupIndex) {
+        assertGroup(groupIndex);
         return myGroups.get(groupIndex).getStats();
+    }
+
+    /*
+     * Return nothing if the index points to a valid group
+     * otherwise throw a @{java.lang.IllegalArgumentException}
+     */
+    private void assertGroup(int index) throws IllegalArgumentException {
+        if (index >= myGroups.size()) {
+            throw new IllegalArgumentException("Illegal group index " + index);
+        }
     }
 
     /*
