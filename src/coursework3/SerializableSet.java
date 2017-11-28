@@ -34,6 +34,8 @@ abstract class SerializableSet<T extends Serializable> implements Serializable {
 
     /*
      * Whether to discard empty items while deserializing.
+     * This is mainly needed by @{SkillSorter} because it requires 5 groups
+     * regardless of whether they are empty;
      */
     private boolean mDiscardEmpty = false;
 
@@ -116,6 +118,7 @@ abstract class SerializableSet<T extends Serializable> implements Serializable {
         // The special characters in mSeparator should be escaped
         // because @{java.lang.String.split()} interprets the argument
         // as a regular expression.
+        // The `-1` prevents it from stripping empty items at the end.
         String[] items = str.split(Pattern.quote(mSeparator), -1);
 
         // Recreate each item from the serialized form
