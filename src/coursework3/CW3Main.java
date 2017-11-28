@@ -2,6 +2,7 @@ package coursework3;
 
 import java.util.Random;
 import java.util.Scanner;
+import java.util.HashMap;
 
 import static coursework3.Constants.INDEX_SKILL_MAP;
 
@@ -12,6 +13,10 @@ public class CW3Main {
         // TODO: Remove testing code
         Scanner scanner = new Scanner(System.in);
         feedRandomData(scanner.nextInt());
+        HashMap<String, Integer> map = sSorter.getStats(0);
+        for (String k : map.keySet()) {
+            System.out.println(k + "\t" + map.get(k));
+        }
         String s = sSorter.serialize();
         System.out.println(s);
         SkillSorter nSorter = new SkillSorter();

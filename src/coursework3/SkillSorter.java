@@ -3,6 +3,7 @@ package coursework3;
 import cw3interfaces.SkillSorterInterface;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static coursework3.Constants.SKILL_NUM;
 
@@ -99,6 +100,15 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
         for (int i = 0; i < myGroups.size(); i++) {
             System.out.println(myGroups.get(i).toString());
         }
+    }
+
+    /*
+     * Retrieve status on how many volunteers
+     * the specified group has for each possible combination of skills
+     * @groupIndex: the group.
+     */
+    public HashMap<String, Integer> getStats(int groupIndex) {
+        return myGroups.get(groupIndex).getStats();
     }
 
     /*

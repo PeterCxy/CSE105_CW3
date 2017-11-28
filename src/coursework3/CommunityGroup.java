@@ -3,6 +3,7 @@ package coursework3;
 import cw3interfaces.CommunityGroupInterface;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static coursework3.Constants.SKILL_NUM;
 
@@ -16,6 +17,15 @@ public class CommunityGroup extends SerializableSet<Volunteer> implements Commun
      * The index of this array corresponds to @{Volunteer.mSkillSet}
      */
     private int[] mSkillSet = new int[]{0, 0, 0, 0, 0};
+
+    /*
+     * Keep track on how many volunteers we have for each possible
+     * combination of skills
+     * (there is finite possible combinations, after all)
+     * This is to ease the way to display all the members
+     * because we can simply use a table with this.
+     */
+    private HashMap<String, Integer> mStats = new HashMap<>();
 
     /*
      * Constructor to explicitly handle things needed by @{SerializableSet<T>}
@@ -36,6 +46,11 @@ public class CommunityGroup extends SerializableSet<Volunteer> implements Commun
         for (int i = 0; i < SKILL_NUM; i++) {
             mSkillSet[i] += vl.getSkillPoint(i);
         }
+
+        // Add this volunteer to corresponding stats
+        String skillSet = vl.getSkillSet();
+        int num = mStats.containsKey(skillSet) ? mStats.get(skillSet) : 0;
+        mStats.put(skillSet, num + 1);
     }
 
     /*
@@ -53,6 +68,18 @@ public class CommunityGroup extends SerializableSet<Volunteer> implements Commun
         for (int i = 0; i < SKILL_NUM; i++) {
             mSkillSet[i] -= vl.getSkillPoint(i);
         }
+
+        // Remove this volunteer from the corresponding stats
+        String skillSet = vl.getSkillSet();
+        if (mStats.containsKey(skillSet)) {
+            int num = mStats.get(skillSet);
+            if (num > 1) {
+                mStats.put(skillSet, num - 1); // Decrease by one if not zero
+            } else {
+                mStats.remove(skillSet); // Remove the entry if it has become zero
+            }
+        }
+
         return true;
     }
 
@@ -71,6 +98,7 @@ public class CommunityGroup extends SerializableSet<Volunteer> implements Commun
     public void clearVolunteers() {
         mVolunteers.clear();
         mSkillSet = new int[]{0, 0, 0, 0, 0};
+        mStats.clear();
     }
 
     /*
@@ -85,6 +113,14 @@ public class CommunityGroup extends SerializableSet<Volunteer> implements Commun
      */
     public int getSkillPoint(int index) {
         return mSkillSet[index];
+    }
+
+    /*
+     * Retrieve status on how many voluteers
+     * this group has for each possible combination of skills
+     */
+    public HashMap<String, Integer> getStats() {
+        return mStats;
     }
 
     /*
