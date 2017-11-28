@@ -6,16 +6,7 @@ JC = javac
 JAVA = java
 .SUFFIXES: .java .class
 
-CLASSES = \
-		src/cw3interfaces/CommunityGroupInterface.java \
-		src/cw3interfaces/SkillSorterInterface.java \
-		src/cw3interfaces/VolunteerInterface.java \
-		src/coursework3/CommunityGroup.java \
-		src/coursework3/Constants.java \
-		src/coursework3/CW3Main.java \
-		src/coursework3/SkillSorter.java \
-		src/coursework3/Volunteer.java \
-		src/coursework3/Utility.java
+CLASSES = $(shell find src -name *.java)
 
 DSTFILES = $(patsubst src/%.java,out/%.class,$(CLASSES))
 
