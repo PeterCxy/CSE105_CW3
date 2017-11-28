@@ -20,6 +20,18 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
             myGroups.add(new CommunityGroup());
         }
     }
+
+    /*
+     * Override the deserialize method to check the group number
+     * make sure we always have 5 groups
+     */
+    @Override
+    public void deserialize(String str) throws Serializable.DeserializationException {
+        super.deserialize(str);
+        if (myGroups.size() != 5) {
+            throw new Serializable.DeserializationException("Group number isn't 5");
+        }
+    }
     
     /*
      * Add the volunteer to some group such that

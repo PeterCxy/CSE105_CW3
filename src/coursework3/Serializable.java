@@ -19,5 +19,19 @@ interface Serializable {
      * Deserialize this object from a String
      * For persistency
      */
-    void deserialize(String str);
+    void deserialize(String str) throws DeserializationException;
+
+    public class DeserializationException extends Exception {
+        // Needed by Java's exception system.
+        // The number means nothing but just an ID.
+        public static final long serialVersionUID = 320731900l;
+
+        public DeserializationException(Throwable e) {
+            super(e);
+        }
+
+        public DeserializationException(String why) {
+            super(why);
+        }
+    }
 }

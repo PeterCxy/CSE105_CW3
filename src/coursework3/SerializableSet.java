@@ -100,7 +100,7 @@ abstract class SerializableSet<T extends Serializable> implements Serializable {
      * For persistency
      */
     @Override
-    public void deserialize(String str) {
+    public void deserialize(String str) throws Serializable.DeserializationException {
         clear(); // Clear the list first.
 
         // The special characters in mSeparator should be escaped

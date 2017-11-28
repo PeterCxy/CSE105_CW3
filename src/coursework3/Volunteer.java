@@ -81,8 +81,12 @@ public class Volunteer implements VolunteerInterface, Serializable {
      * but this is needed to implement the Serializable interface.
      */
     @Override
-    public void deserialize(String str) throws IllegalArgumentException {
-        parseSkillStr(str);
+    public void deserialize(String str) throws Serializable.DeserializationException {
+        try {
+            parseSkillStr(str);
+        } catch (IllegalArgumentException e) {
+            throw new Serializable.DeserializationException(e);
+        }
     }
 
     /*

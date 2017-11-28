@@ -15,8 +15,13 @@ public class CW3Main {
         String s = sSorter.serialize();
         System.out.println(s);
         SkillSorter nSorter = new SkillSorter();
-        nSorter.deserialize(s);
-        nSorter.printAll();
+
+        try {
+            nSorter.deserialize(s);
+            nSorter.printAll();
+        } catch (Serializable.DeserializationException e) {
+            throw new RuntimeException(e);
+        }
     }
     
     /*
