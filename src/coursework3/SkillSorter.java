@@ -38,12 +38,25 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
      * Add the volunteer to some group such that
      * the distribution of the skills and the total members of each group
      * are best balanced.
+     * This returns the group that the volunteer is added to.
+     * Since the defined @{cw3interfaces.SkillSorterInterface} has already
+     * limited the return type of this function, we need a different name here.
      * 
      * @vol: the volunteer
      */
+    public int myAddVolunteer(Volunteer vol) {
+        int best = bestGroup(vol);
+        myGroups.get(best).addVolunteer(vol);
+        return best;
+    }
+
+    /*
+     * Same as @{myAddVolunteer}, to conform with
+     * the @{cw3interfaces.SkillSorterInterface} definition
+     */
     @Override
     public void addVolunteer(Volunteer vol) {
-        myGroups.get(bestGroup(vol)).addVolunteer(vol);
+        myAddVolunteer(vol);
     }
     
     /*

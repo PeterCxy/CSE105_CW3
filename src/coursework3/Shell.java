@@ -63,6 +63,7 @@ class Shell {
     static {
         sCommandList.add(new HelpCommand());
         sCommandList.add(new ExitCommand());
+        sCommandList.add(new AddCommand());
     }
 
     /*
@@ -155,6 +156,35 @@ class Shell {
         void execute(Scanner scanner) {
             // TODO: Save data.
             System.exit(0);
+        }
+    }
+
+    /*
+     * The Add command.
+     * Adds a volunteer to one of the groups
+     * such that the groups are best balanced.
+     * 
+     * `add` or `a` to invoke
+     */
+    private static class AddCommand extends Command {
+        AddCommand() {
+            super("add", "a", "Add a volunteer to one of the groups such that they are best balanced.");
+        }
+
+        @Override
+        void execute(Scanner scanner) {
+            out.println("add > Please input the skill set of the new volunteer. e.g. ABC, BBA, CDE");
+            out.print("add >> "); // The prompt
+            String skillSet = scanner.next().trim().toUpperCase();
+            
+            if (!skillSet.equals("")) {
+                // Make sure that the skill set is not empty
+                int index = sSorter.myAddVolunteer(new Volunteer(skillSet));
+                out.println("add > The volunteer with skills `" + skillSet + "` has been added to group " + index);
+            } else {
+                // Error message.
+                throw new IllegalArgumentException("Illegal skill set.");
+            }
         }
     }
 }
