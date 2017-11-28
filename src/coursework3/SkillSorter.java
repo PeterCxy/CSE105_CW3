@@ -45,16 +45,34 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
         myGroups.get(bestGroup(vol)).addVolunteer(vol);
     }
     
+    /*
+     * Delete a volunteer from a group and add to another group
+     * If no such volunteer is found, @{java.lang.IllegalArgumentException} will be thrown
+     * 
+     * @skillSet: the skills the volunteer has. if invalid,
+     *  @{java.lang.IllegalArgumentException} will be thrown.
+     * @from: the original group
+     * @to: the new group
+     */
     @Override
-    public void moveVolunteer(String skillSet, CommunityGroup from, CommunityGroup to) {
-        //move a volunteer with this skillset (eg AAA, BCD) from one CommunityGroup to another
-        //COMPLETE CODE HERE
+    public void moveVolunteer(String skillSet, CommunityGroup from, CommunityGroup to) throws IllegalArgumentException {
+        deleteVolunteer(skillSet, from);
+        to.addVolunteer(new Volunteer(skillSet));
     }
     
+    /*
+     * Delete a volunteer with some skills from a group
+     * If no such volunteer is found, @{java.lang.IllegalArgumentException} will be thrown
+     * 
+     * @skillSet: the skills the volunteer has. if invalid,
+     *  @{java.lang.IllegalArgumentException} will be thrown.
+     * @from: the group to delete from
+     */
     @Override
-    public void deleteVolunteer(String skillSet, CommunityGroup from) {
-        //delete a volunteer with this skillset from this CommunityGroup
-        //COMPLETE CODE HERE
+    public void deleteVolunteer(String skillSet, CommunityGroup from) throws IllegalArgumentException {
+        if (!from.removeVolunteer(skillSet)) {
+            throw new IllegalArgumentException("Skill set " + skillSet + " not found.");
+        }
     }
     
     /*
