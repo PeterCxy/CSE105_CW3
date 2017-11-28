@@ -138,7 +138,7 @@ class Shell {
 
             // Loop over every command to print the lines of this table
             for (Command cmd : sCommandList) {
-                out.println(cmd.getName() + " (" + cmd.getShortName() + ")\t" + cmd.getDescription());
+                out.println(cmd.getName() + "\t(" + cmd.getShortName() + ")\t" + cmd.getDescription());
             }
         }
     }
