@@ -105,6 +105,7 @@ class Shell {
         sCommandList.add(new ShowCommand());
         sCommandList.add(new AddCommand());
         sCommandList.add(new DeleteCommand());
+        sCommandList.add(new MoveCommand());
         sCommandList.add(new RandomCommand());
     }
 
@@ -327,6 +328,7 @@ class Shell {
     /*
      * The Delete command
      * delete a volunteer from a group
+     * also acts as the base class of @{MoveCommand}
      * 
      * `delete` or `d` to invoke
      */
@@ -335,14 +337,54 @@ class Shell {
             super("delete", "d", "Delete a volunteer from a group.");
         }
 
+        DeleteCommand(String name, String shortName, String description) {
+            super(name, shortName, description);
+        }
+
         @Override
         void manipulate(int groupIndex, Scanner scanner) {
             println("Choose a volunteer from the table above.");
             println("Note that we don't distinguish between volunteers with the same skills.");
-            println("Please input the skill set of the volunteer that you need to delete.");
-            String skillSet = prompt(scanner);
+            println("Please input the skill set of the volunteer that you need to " + getName() + ".");
+            String skillSet = prompt(scanner).toUpperCase();
+            afterDelete(groupIndex, skillSet, scanner);
+            println("Operation completed.");
+        }
+
+        /*
+         * This method is to be overridden from the `move` command
+         * because the two command shares everything before deleting
+         */
+        void afterDelete(int groupIndex, String skillSet, Scanner scanner) {
+            println("A volunteer of skills `" + skillSet + "` will be deleted from group " + groupIndex);
             sSorter.deleteVolunteer(skillSet, groupIndex);
-            println("A volunteer of skills `" + skillSet + "` has been deleted from group " + groupIndex);
+        }
+    }
+
+    /*
+     * The Move command
+     * Move a volunteer from one group to another.
+     * This command shares some logic with @{DeleteCommand}
+     * because it also needs to delete.
+     * 
+     * `move` or `m` to invoke
+     */
+    private static class MoveCommand extends DeleteCommand {
+        MoveCommand() {
+            super("move", "m", "Move a volunteer from one group to another.");
+        }
+
+        /*
+         * The volunteer is to be deleted from the original group.
+         * We need to add it to a new group
+         * This differs from @{AddCommand} since it does not
+         * find the best balance
+         */
+        void afterDelete(int groupIndex, String skillSet, Scanner scanner) {
+            println("Please choose the target group to move to [0-4]");
+            int targetGroup = promptInt(scanner);
+            println("A volunteer of skills `" + skillSet + "` will be moved from group " + groupIndex + " to " + targetGroup);
+            sSorter.moveVolunteer(skillSet, groupIndex, targetGroup);
         }
     }
 
