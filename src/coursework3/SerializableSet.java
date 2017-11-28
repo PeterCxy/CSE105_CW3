@@ -102,6 +102,10 @@ abstract class SerializableSet<T extends Serializable> implements Serializable {
     @Override
     public void deserialize(String str) {
         clear(); // Clear the list first.
+
+        // The special characters in mSeparator should be escaped
+        // because @{java.lang.String.split()} interprets the argument
+        // as a regular expression.
         String[] items = str.split(Pattern.quote(mSeparator));
 
         // Recreate each item from the serialized form
