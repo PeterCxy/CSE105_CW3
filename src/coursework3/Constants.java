@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Constants {
+    // Data file path
+    public static final String DATA_FILE = "groups.dat";
+    
     // Total number of possible skills
     public static final int SKILL_NUM = 5;
 

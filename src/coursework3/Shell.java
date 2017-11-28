@@ -9,6 +9,7 @@ import java.util.Scanner;
 import static java.lang.System.out;
 
 import static coursework3.Constants.INDEX_SKILL_MAP;
+import static coursework3.Constants.DATA_FILE;
 
 /*
  * The Command-Line Interface (CLI, or Shell) of this program
@@ -107,6 +108,21 @@ class Shell {
         sCommandList.add(new DeleteCommand());
         sCommandList.add(new MoveCommand());
         sCommandList.add(new RandomCommand());
+    }
+
+    /*
+     * Load from saved data
+     * do nothing if no data found or could not load
+     */
+    public static final void loadData() {
+        out.println("Attempting to load saved data...");
+
+        try {
+            Utility.deserializeFromFile(sSorter, DATA_FILE);
+            out.println("Data loaded.");
+        } catch (Exception e) {
+            out.println("Could not load saved data. Starting fresh.");
+        }
     }
 
     /*
@@ -209,12 +225,22 @@ class Shell {
      */
     private static class ExitCommand extends Command {
         ExitCommand() {
-            super("exit", "ex", "Exit the program.");
+            super("exit", "ex", "Save and exit the program.");
         }
 
         @Override
         void execute(Scanner scanner) {
-            // TODO: Save data.
+            // Save data to disk before exit.
+            out.println("Saving data...");
+
+            try {
+                Utility.serializeToFile(sSorter, DATA_FILE);
+                out.println("Data saved.");
+            } catch (Exception e) {
+                out.println("Failed to save data.");
+            }
+
+            out.println("Program terminated.");
             System.exit(0);
         }
     }
