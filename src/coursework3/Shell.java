@@ -65,6 +65,7 @@ class Shell {
         sCommandList.add(new ExitCommand());
         sCommandList.add(new OverviewCommand());
         sCommandList.add(new AddCommand());
+        sCommandList.add(new RandomCommand());
     }
 
     /*
@@ -116,7 +117,6 @@ class Shell {
         for (int i = 0; i < num; i++) {
             sSorter.addVolunteer(new Volunteer(randomSkills()));
         }
-        sSorter.printAll();
     }
 
     /*
@@ -220,6 +220,40 @@ class Shell {
             } else {
                 // Error message.
                 throw new IllegalArgumentException("Illegal skill set.");
+            }
+        }
+    }
+
+    /*
+     * The Random command
+     * feeds random data to the program
+     * for bulk testing
+     * 
+     * `random` or `ra` to invoke
+     */
+    private static class RandomCommand extends Command {
+        RandomCommand() {
+            super("random", "ra", "Feed random data to the program for bulk testing.");
+        }
+
+        @Override
+        void execute(Scanner scanner) {
+            out.println("random > How many volunteers with random skill set would you like?");
+            out.print("random >> ");
+
+            if (!scanner.hasNextInt()) { // Make sure we have en integer
+                scanner.next(); // Discard this token
+                throw new IllegalArgumentException("You must enter an integer.");
+            }
+
+            int total = scanner.nextInt();
+
+            if (total > 0) {
+                feedRandomData(total);
+                out.println("random > Added " + total + " random volunteers.");
+                out.println("random > Use `overview` to see how the groups are balanced.");
+            } else {
+                throw new IllegalArgumentException("Volunteer count can't be 0 or minus.");
             }
         }
     }
