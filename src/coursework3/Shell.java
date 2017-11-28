@@ -57,7 +57,7 @@ class Shell {
 
         // Shorthand to print the prompt to wait for input
         void printPrompt() {
-            out.print(mName + ">> ");
+            out.print(mName + " >> ");
         }
 
         /*
