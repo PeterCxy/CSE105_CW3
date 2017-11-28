@@ -107,6 +107,7 @@ class Shell {
         sCommandList.add(new AddCommand());
         sCommandList.add(new DeleteCommand());
         sCommandList.add(new MoveCommand());
+        sCommandList.add(new ClearCommand());
         sCommandList.add(new RandomCommand());
     }
 
@@ -411,6 +412,24 @@ class Shell {
             int targetGroup = promptInt(scanner);
             println("A volunteer of skills `" + skillSet + "` will be moved from group " + groupIndex + " to " + targetGroup);
             sSorter.moveVolunteer(skillSet, groupIndex, targetGroup);
+        }
+    }
+
+    /*
+     * The Clear command
+     * delete everything and start fresh
+     * 
+     * `clear` or `clr` to invoke
+     */
+    private static class ClearCommand extends Command {
+        ClearCommand() {
+            super("clear", "clr", "Delete everything.");
+        }
+
+        @Override
+        void execute(Scanner scanner) {
+            sSorter.deleteAllVolunteers();
+            println("Everything deleted.");
         }
     }
 
