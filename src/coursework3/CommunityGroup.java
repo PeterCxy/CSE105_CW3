@@ -163,7 +163,6 @@ public class CommunityGroup extends SerializableSet<Volunteer> implements Commun
             totalBuilder.append(": ");
             totalBuilder.append(mSkillSet[i]);
         }
-        totalBuilder.append(", Total Volunteers: ").append(mVolunteers.size());
         return totalBuilder.substring(2, totalBuilder.length()).toString();
     }
 
@@ -173,6 +172,6 @@ public class CommunityGroup extends SerializableSet<Volunteer> implements Commun
      */
     @Override
     public String toString() {
-        return getSkillsTotals();
+        return getSkillsTotals() + ", Total Volunteers: " + mVolunteers.size();
     }
 }
