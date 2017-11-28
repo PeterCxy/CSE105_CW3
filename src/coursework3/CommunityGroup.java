@@ -66,6 +66,14 @@ public class CommunityGroup extends SerializableSet<Volunteer> implements Commun
     }
 
     /*
+     * Clear everything in this group
+     */
+    public void clearVolunteers() {
+        mVolunteers.clear();
+        mSkillSet = new int[]{0, 0, 0, 0, 0};
+    }
+
+    /*
      * Get the number of a skill based on its name
      */
     public int getSkillPoint(char skillName) throws IllegalArgumentException {

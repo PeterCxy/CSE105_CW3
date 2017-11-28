@@ -22,6 +22,9 @@ public class CW3Main {
         } catch (Serializable.DeserializationException e) {
             throw new RuntimeException(e);
         }
+
+        nSorter.deleteAllVolunteers();
+        nSorter.printAll();
     }
     
     /*

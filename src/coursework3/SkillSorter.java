@@ -57,10 +57,14 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
         //COMPLETE CODE HERE
     }
     
+    /*
+     * Remove all volunteers from all groups
+     */
     @Override
     public void deleteAllVolunteers() {
-        // delete all volunteers from all CommunityGroups
-        //COMPLETE CODE HERE
+        for (int i = 0; i < myGroups.size(); i++) {
+            myGroups.get(i).clearVolunteers();
+        }
     }
 
     @Override
