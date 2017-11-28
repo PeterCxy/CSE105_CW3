@@ -15,7 +15,7 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
      * Initialization and stuff needed by @{SerializableSet<T>}
      */
     public SkillSorter() {
-        super(CommunityGroup.class, SEPARATOR);
+        super(CommunityGroup.class, SEPARATOR, false);
         setList(myGroups);
         for (int i = 0; i < 5; i++) {
             myGroups.add(new CommunityGroup());

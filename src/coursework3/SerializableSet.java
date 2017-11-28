@@ -33,6 +33,11 @@ abstract class SerializableSet<T extends Serializable> implements Serializable {
     private String mSeparator = null;
 
     /*
+     * Whether to discard empty items while deserializing.
+     */
+    private boolean mDiscardEmpty = false;
+
+    /*
      * This constructor should only be used from the subclasses
      * to give parameters needed by this base class.
      * Trying to give the most freedom to subclasses.
@@ -44,10 +49,12 @@ abstract class SerializableSet<T extends Serializable> implements Serializable {
      * 
      * @clazz: the Class object of the type of `T`.
      * @separator: the separator used to serialize / deserialize.
+     * @discardEmpty: whether to discard empty items while deserializing
      */
-    protected SerializableSet(Class<T> clazz, String separator) {
+    protected SerializableSet(Class<T> clazz, String separator, boolean discardEmpty) {
         mClazz = clazz;
         mSeparator = separator;
+        mDiscardEmpty = discardEmpty;
     }
     
     /*
@@ -82,6 +89,9 @@ abstract class SerializableSet<T extends Serializable> implements Serializable {
      */
     @Override
     public String serialize() {
+        if (mList.size() == 0)
+            return ""; // Special case: return nothing if there's just nothing
+
         StringBuilder sb = new StringBuilder();
 
         // Append all the serialized items to the string
@@ -106,21 +116,23 @@ abstract class SerializableSet<T extends Serializable> implements Serializable {
         // The special characters in mSeparator should be escaped
         // because @{java.lang.String.split()} interprets the argument
         // as a regular expression.
-        String[] items = str.split(Pattern.quote(mSeparator));
+        String[] items = str.split(Pattern.quote(mSeparator), -1);
 
         // Recreate each item from the serialized form
         for (int i = 0; i < items.length; i++) {
-            T item = null;
+            if (!(mDiscardEmpty && items[i].equals(""))) {
+                T item = null;
 
-            try {
-                item = mClazz.newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
-                // Throw it as a fatal Error
-                throw new RuntimeException("A Serializable must have a public zero-argument constructor.");
+                try {
+                    item = mClazz.newInstance();
+                } catch (InstantiationException | IllegalAccessException e) {
+                    // Throw it as a fatal Error
+                    throw new RuntimeException("A Serializable must have a public zero-argument constructor.");
+                }
+
+                item.deserialize(items[i]);
+                add(item);
             }
-
-            item.deserialize(items[i]);
-            add(item);
         }
     }
 }

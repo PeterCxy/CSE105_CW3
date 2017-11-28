@@ -31,7 +31,7 @@ public class CommunityGroup extends SerializableSet<Volunteer> implements Commun
      * Constructor to explicitly handle things needed by @{SerializableSet<T>}
      */
     public CommunityGroup() {
-        super(Volunteer.class, SEPARATOR);
+        super(Volunteer.class, SEPARATOR, true);
         setList(mVolunteers);
     }
     
