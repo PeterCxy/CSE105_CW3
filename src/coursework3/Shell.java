@@ -75,6 +75,10 @@ class Shell {
     public static final void startShell() {
         Scanner scanner = new Scanner(System.in); // Initialize the scanner for input
 
+        // Print the help information on start
+        out.println("> help"); // Mimick user input
+        new HelpCommand().execute(scanner); // Just using a newly-created @{HelpCommand} instance is fine here.
+
         // Loop forever waiting for command invocation
         // Exit only when `exit` is given or being killed by OS
         while (true) {
