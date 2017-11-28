@@ -1,6 +1,7 @@
 package coursework3;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -101,6 +102,7 @@ class Shell {
         sCommandList.add(new HelpCommand());
         sCommandList.add(new ExitCommand());
         sCommandList.add(new OverviewCommand());
+        sCommandList.add(new ShowCommand());
         sCommandList.add(new AddCommand());
         sCommandList.add(new RandomCommand());
     }
@@ -229,6 +231,42 @@ class Shell {
         @Override
         void execute(Scanner scanner) {
             sSorter.printAll();
+        }
+    }
+
+    /*
+     * The Show command
+     * Print the information about a group:
+     *   how many volunteers does it have for each possible skill combination
+     * 
+     * `show` or `s` to invoke
+     */
+    private static class ShowCommand extends Command {
+        ShowCommand() {
+            super("show", "s", "Print a group's information.");
+        }
+
+        @Override
+        void execute(Scanner scanner) {
+            println("Please specify which group you would like to view. [0-4]");
+            int index = promptInt(scanner);
+
+            if (index < 5) {
+                println("Printing information about group " + index);
+                HashMap<String, Integer> stats = sSorter.getStats(index);
+
+                // Again, print it as a table.
+                // First make the header.
+                // Don't need the command prompt here, so just use @{java.lang.System.out.println()}
+                out.println("SkillSet\tTotal");
+
+                // Print all entries available in the stats
+                for (String skills : stats.keySet()) {
+                    out.println(skills + "\t\t" + stats.get(skills));
+                }
+            } else {
+                throw new IllegalArgumentException("Group index must be within [0, 4].");
+            }
         }
     }
 
