@@ -111,7 +111,7 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
      */
     public void printAll() {
         for (int i = 0; i < myGroups.size(); i++) {
-            System.out.println(myGroups.get(i).toString());
+            System.out.println(i + ": " + myGroups.get(i).toString());
         }
     }
 
