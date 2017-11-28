@@ -132,6 +132,14 @@ public class CommunityGroup extends SerializableSet<Volunteer> implements Commun
     protected void add(Volunteer vl) {
         addVolunteer(vl);
     }
+
+    /*
+     * Alias of @{clearVolunteers()} for superclass
+     */
+    @Override
+    protected void clear() {
+        clearVolunteers();
+    }
     
     /*
      * Returns the total number of volunteers available from this group
