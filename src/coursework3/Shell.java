@@ -63,6 +63,7 @@ class Shell {
     static {
         sCommandList.add(new HelpCommand());
         sCommandList.add(new ExitCommand());
+        sCommandList.add(new OverviewCommand());
         sCommandList.add(new AddCommand());
     }
 
@@ -139,11 +140,20 @@ class Shell {
         void execute(Scanner scanner) {
             // Print the information of all the available commands with a table
             // First print the header
-            out.println("Command\t\tDescription");
+            out.println("Command\t\t\tDescription");
 
             // Loop over every command to print the lines of this table
             for (Command cmd : sCommandList) {
-                out.println(cmd.getName() + "\t(" + cmd.getShortName() + ")\t" + cmd.getDescription());
+                // To deal with alignment of the table in help message
+                // Longer command names might have exceeded the table cells.
+                if (cmd.getName().length() < 8) {
+                    // If the name is within 8 characters
+                    // We need two TABs for correct alignment
+                    out.println(cmd.getName() + "\t\t(" + cmd.getShortName() + ")\t" + cmd.getDescription());
+                } else {
+                    // Otherwise we only need one TAB
+                    out.println(cmd.getName() + "\t(" + cmd.getShortName() + ")\t" + cmd.getDescription());
+                }
             }
         }
     }
@@ -161,6 +171,23 @@ class Shell {
         void execute(Scanner scanner) {
             // TODO: Save data.
             System.exit(0);
+        }
+    }
+
+    /*
+     * The Overview command
+     * Print overview information on how each group is balanced.
+     * 
+     * `overview` or `o` to invoke.
+     */
+    private static class OverviewCommand extends Command {
+        OverviewCommand() {
+            super("overview", "o", "Print overview information on how each group is balanced.");
+        }
+
+        @Override
+        void execute(Scanner scanner) {
+            sSorter.printAll();
         }
     }
 
