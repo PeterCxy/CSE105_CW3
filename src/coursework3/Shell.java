@@ -85,7 +85,12 @@ class Shell {
                 boolean executed = false;
                 for (Command cmd : sCommandList) {
                     if (cmd.getName().equals(userCmd) || cmd.getShortName().equals(userCmd)) {
-                        cmd.execute(scanner);
+                        try {
+                            cmd.execute(scanner);
+                        } catch (Exception e) {
+                            // Error happend. Don't crash and just print the error
+                            out.println(cmd.getName() + " > ERROR: " + e.getMessage());
+                        }
                         executed = true;
                     }
                 }
