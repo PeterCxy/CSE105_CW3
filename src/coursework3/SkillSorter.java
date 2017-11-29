@@ -153,6 +153,28 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
     }
 
     /*
+     * Return an array of the points of skill X across all groups
+     */
+    private int[] getSkillPoints(int skillIndex) {
+        int[] ret = new int[myGroups.size()]; // The array is fixed-length
+        for (int i = 0; i < myGroups.size(); i++) {
+            ret[i] = myGroups.get(i).getSkillPoint(skillIndex);
+        }
+        return ret;
+    }
+
+    /*
+     * Return an array of the total members in each group
+     */
+    private int[] getMemberTotals() {
+        int[] ret = new int[myGroups.size()];
+        for (int i = 0; i < myGroups.size(); i++) {
+            ret[i] = myGroups.get(i).howManyVolunteers();
+        }
+        return ret;
+    }
+
+    /*
      * Determine which group to add a volunteer to
      * that will make the cost function (defined below) be closest to 0
      * @vl: the volunteer
@@ -207,25 +229,14 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
      * @groupIndex: the group to add to
      */
     private double varianceSkill(int skillIndex, Volunteer vl, int groupIndex) {
-        // Calculate the average which is needed by the variance
-        double average = vl.getSkillPoint(skillIndex); // Start with our new guy
-        for (int i = 0; i < myGroups.size(); i++) {
-            average += myGroups.get(i).getSkillPoint(skillIndex);
-        }
-        average = average / myGroups.size();
+        // Get the current skill points
+        int[] skillPoints = getSkillPoints(skillIndex);
 
-        // Actually calculate the variance
-        double variance = 0f;
-        for (int i = 0; i < myGroups.size(); i++) {
-            double diff = myGroups.get(i).getSkillPoint(skillIndex) - average;
-            if (i == groupIndex) {
-                // The new person is here
-                diff += vl.getSkillPoint(skillIndex);
-            }
-            variance += diff * diff;
-        }
+        // Pretend to add the volunteer to one group
+        skillPoints[groupIndex] += vl.getSkillPoint(skillIndex);
 
-        return variance / myGroups.size();
+        // Calculate the variance
+        return Utility.variance(skillPoints);
     }
 
     /*
@@ -235,21 +246,8 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
      * @groupIndex: the group to add to
      */
     private double varianceSize(int groupIndex) {
-        double average = 1f;
-        for (int i = 0; i < myGroups.size(); i++) {
-            average += myGroups.get(i).howManyVolunteers();
-        }
-        average = average / myGroups.size();
-
-        double variance = 0f;
-        for (int i = 0; i < myGroups.size(); i++) {
-            double diff = myGroups.get(i).howManyVolunteers() - average;
-            if (i == groupIndex) {
-                diff += 1;
-            }
-            variance += diff * diff;
-        }
-
-        return variance / myGroups.size();
+        int[] totals = getMemberTotals();
+        totals[groupIndex] += 1;
+        return Utility.variance(totals);
     }
 }

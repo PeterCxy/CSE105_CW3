@@ -34,6 +34,29 @@ class Utility {
     }
 
     /*
+     * Calculate the variance of a group of data
+     * V(x1, x2, ..., xn) = ((x1 - E)^2 + (x2 - E)^2 + ... + (xn - E)^2) / n
+     * where E is the average value of this data set.
+     */
+    public static double variance(int[] data) {
+        // Calculate average first to calculate the variance
+        double average = 0f;
+        for (int d : data) {
+            average += d;
+        }
+        average = average / data.length;
+
+        // Calculate the variance
+        double variance = 0f;
+        for (int d : data) {
+            double diff = (d - average);
+            variance += diff * diff;
+        }
+
+        return variance / data.length;
+    }
+
+    /*
      * Serialize a @{Serializable} to a file
      * @s: the object
      * @path: the file to write to
