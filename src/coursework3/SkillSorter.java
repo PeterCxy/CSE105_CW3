@@ -176,11 +176,10 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
      * The closer the value is to 0, the better the distribution will be.
      * This will not actually add the volunteer
      * Formula:
-     *   (V(A) + V(B) + V(C) + V(D) + V(E) + V(S)) / N
+     *   (V(A) + V(B) + V(C) + V(D) + V(E) + V(S)) / 6
      *  where
      *   V(X) is the variance of skill X across all groups
      *   V(S) is the variance of the sizes of all groups
-     *   N is the number of groups
      * 
      * @vl: the volunteer
      * @groupIndex: which group to add to
@@ -196,7 +195,7 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
         // and the cost caused by the distributon of sizes
         cost += varianceSize(groupIndex);
 
-        return cost / myGroups.size();
+        return cost / (myGroups.size() + 1);
     }
 
     /*
