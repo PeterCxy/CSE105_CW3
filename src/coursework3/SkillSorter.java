@@ -46,6 +46,11 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
      */
     public int myAddVolunteer(Volunteer vol) {
         int best = bestGroup(vol);
+
+        if (best < 0) {
+            throw new IllegalStateException("Could not find the best group. All the groups may be full. Aborting.");
+        }
+
         myGroups.get(best).addVolunteer(vol);
         return best;
     }
@@ -177,6 +182,7 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
     /*
      * Determine which group to add a volunteer to
      * that will make the cost function (defined below) be closest to 0
+     * return -1 if no such group could be found (e.g. all of them are full)
      * @vl: the volunteer
      */
     private int bestGroup(Volunteer vl) {
@@ -202,6 +208,8 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
      *  where
      *   V(X) is the variance of skill X across all groups
      *   V(S) is the variance of the sizes of all groups
+     * Exceptions: when a group is full, trying to add members to it
+     *   will always result in a cost of Double.MAX_VALUE
      * 
      * @vl: the volunteer
      * @groupIndex: which group to add to
