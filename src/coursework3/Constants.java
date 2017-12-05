@@ -10,6 +10,9 @@ public class Constants {
     // Total number of possible skills
     public static final int SKILL_NUM = 5;
 
+    // Maximun members of each group
+    public static final int MAX_GROUP_MEMBER = 500;
+
     // Map from skill name to its index
     public static final Map<Character, Integer> SKILL_INDEX_MAP = new HashMap<>();
 

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static coursework3.Constants.SKILL_NUM;
+import static coursework3.Constants.MAX_GROUP_MEMBER;
 
 public class CommunityGroup extends SerializableSet<Volunteer> implements CommunityGroupInterface {
     private static final String SEPARATOR = ",";
@@ -33,6 +34,13 @@ public class CommunityGroup extends SerializableSet<Volunteer> implements Commun
     public CommunityGroup() {
         super(Volunteer.class, SEPARATOR, true);
         setList(mVolunteers);
+    }
+
+    /*
+     * Determine if the group is full (larger than MAX_GROUP_MEMBERS)
+     */
+    public boolean isFull() {
+        return howManyVolunteers() >= MAX_GROUP_MEMBER;
     }
     
     /*

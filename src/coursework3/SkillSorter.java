@@ -207,6 +207,14 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
      * @groupIndex: which group to add to
      */
     private double costFunc(Volunteer vl, int groupIndex) {
+        if (myGroups.get(groupIndex).isFull()) {
+            // If a group is full, set its cost to MAX_VALUE
+            // to avoid adding more members into it
+            // If every group is full, the program will
+            // throw an exception anyway.
+            return Double.MAX_VALUE;
+        }
+
         double cost = 0f;
 
         // Add up all the cost caused by the distribution of skills
