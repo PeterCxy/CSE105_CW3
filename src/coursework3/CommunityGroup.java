@@ -46,8 +46,13 @@ public class CommunityGroup extends SerializableSet<Volunteer> implements Commun
     /*
      * Add a volunteer to this group
      * This does nothing to balance the groups
+     * throws @{java.lang.IllegalStateException} if the group is full
      */
     public void addVolunteer(Volunteer vl) {
+        if (isFull()) {
+            throw new IllegalStateException("This group is full.");
+        }
+
         mVolunteers.add(vl);
 
         // Add the skills of this single volunteer to the totals
