@@ -48,7 +48,7 @@ public class CommunityGroup extends SerializableSet<Volunteer> implements Commun
      * This does nothing to balance the groups
      * throws @{java.lang.IllegalStateException} if the group is full
      */
-    public void addVolunteer(Volunteer vl) {
+    public void addVolunteer(Volunteer vl) throws IllegalStateException {
         if (isFull()) {
             throw new IllegalStateException("This group is full.");
         }

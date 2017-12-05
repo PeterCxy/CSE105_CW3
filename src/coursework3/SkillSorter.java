@@ -41,10 +41,11 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
      * This returns the group that the volunteer is added to.
      * Since the defined @{cw3interfaces.SkillSorterInterface} has already
      * limited the return type of this function, we need a different name here.
+     * If all the groups are full, @{java.lang.IllegalStateException} will be thrown
      * 
      * @vol: the volunteer
      */
-    public int myAddVolunteer(Volunteer vol) {
+    public int myAddVolunteer(Volunteer vol) throws IllegalStateException {
         int best = bestGroup(vol);
 
         if (best < 0) {
@@ -60,7 +61,7 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
      * the @{cw3interfaces.SkillSorterInterface} definition
      */
     @Override
-    public void addVolunteer(Volunteer vol) {
+    public void addVolunteer(Volunteer vol) throws IllegalStateException {
         myAddVolunteer(vol);
     }
     
