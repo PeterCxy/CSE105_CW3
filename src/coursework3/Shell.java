@@ -171,9 +171,9 @@ class Shell {
      * FOR TESTING PURPOSE
      * Feed random data to the sorter and print out the final distribution
      */
-    private static void feedRandomData(int num) {
+    private static void feedRandomData(int num, boolean extreme) {
         for (int i = 0; i < num; i++) {
-            sSorter.addVolunteer(new Volunteer(randomSkills()));
+            sSorter.addVolunteer(new Volunteer(extreme ? randomExtremeSkills() : randomSkills()));
         }
     }
 
@@ -185,6 +185,19 @@ class Shell {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 3; i++) {
             sb.append(INDEX_SKILL_MAP[new Random().nextInt(INDEX_SKILL_MAP.length)]);
+        }
+        return sb.toString();
+    }
+
+    /*
+     * FOR TESTING PURPOSE
+     * Generate random skill sets that are all "AAA" "BBB" "CCC" ....
+     */
+    private static String randomExtremeSkills() {
+        char skill = INDEX_SKILL_MAP[new Random().nextInt(INDEX_SKILL_MAP.length)];
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 3; i++) {
+            sb.append(skill);
         }
         return sb.toString();
     }
@@ -449,9 +462,12 @@ class Shell {
         void execute(Scanner scanner) {
             println("How many volunteers with random skill set would you like?");
             int total = promptInt(scanner);
+            println("Would you like an extreme test set? [y/n] (default: n)");
+            String extremeStr = prompt(scanner);
+            boolean extreme = extremeStr.equals("y");
 
             if (total > 0) {
-                feedRandomData(total);
+                feedRandomData(total, extreme);
                 println("Added " + total + " random volunteers.");
                 println("Use `overview` to see how the groups are balanced.");
             } else {
