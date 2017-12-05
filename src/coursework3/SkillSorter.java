@@ -67,6 +67,7 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
     /*
      * Delete a volunteer from a group and add to another group
      * If no such volunteer is found, @{java.lang.IllegalArgumentException} will be thrown
+     * If the target group is full, @{java.lang.IllegalStateException} will be thrown
      * 
      * @skillSet: the skills the volunteer has. if invalid,
      *  @{java.lang.IllegalArgumentException} will be thrown.
@@ -74,15 +75,17 @@ public class SkillSorter extends SerializableSet<CommunityGroup> implements Skil
      * @to: the new group
      */
     @Override
-    public void moveVolunteer(String skillSet, CommunityGroup from, CommunityGroup to) throws IllegalArgumentException {
-        deleteVolunteer(skillSet, from);
+    public void moveVolunteer(String skillSet, CommunityGroup from, CommunityGroup to) throws IllegalArgumentException, IllegalStateException {
+        // We need to add first
+        // because if the target group is full, the whole operation can break here.
         to.addVolunteer(new Volunteer(skillSet));
+        deleteVolunteer(skillSet, from);
     }
 
     /*
      * Same but with group indexes instead of group objects
      */
-    public void moveVolunteer(String skillSet, int fromIndex, int toIndex) throws IllegalArgumentException {
+    public void moveVolunteer(String skillSet, int fromIndex, int toIndex) throws IllegalArgumentException, IllegalStateException {
         assertGroup(fromIndex);
         assertGroup(toIndex);
         moveVolunteer(skillSet, myGroups.get(fromIndex), myGroups.get(toIndex));
